@@ -224,21 +224,6 @@ a{text-decoration:none;}
 .sidebar.is-collapsed .nav-accordion:hover .sidebar-tooltip{opacity:1;}
 .sidebar:not(.is-collapsed) .sidebar-tooltip{display:none;}
 
-.sidebar-footer{
-  padding:12px; border-top:1px solid var(--sidebar-divider);
-  flex-shrink:0;
-}
-.plant-chip{
-  display:flex; align-items:center; gap:8px;
-  background:rgba(255,255,255,.12);
-  border-radius:10px; padding:8px 10px;
-  color:#fff;
-}
-.plant-chip i{font-size:15px;}
-.plant-chip .plant-text{opacity:1; transition:opacity .15s ease; white-space:nowrap; overflow:hidden;}
-.sidebar.is-collapsed .plant-chip .plant-text{opacity:0; width:0;}
-.sidebar.is-collapsed .plant-chip{justify-content:center;}
-
 /* ============================================================
    MAIN LAYOUT
    ============================================================ */
@@ -265,39 +250,7 @@ a{text-decoration:none;}
 .breadcrumb-wrap .bc-trail{font-size:10.5px; color:var(--text-muted);}
 .breadcrumb-wrap .bc-current{font-size:16px; font-weight:600; color:var(--text-primary); margin-top:1px;}
 
-.global-search{
-  flex:1; max-width:420px;
-  position:relative;
-}
-.global-search input{
-  width:100%; height:36px;
-  background:var(--bg-input);
-  border:1px solid var(--border-color);
-  border-radius:10px;
-  padding:0 14px 0 36px;
-  font-size:12px; font-family:'Poppins',sans-serif;
-  color:var(--text-primary);
-}
-.global-search input:focus{outline:none; border-color:var(--primary-teal); box-shadow:0 0 0 3px rgba(21,122,110,.12);}
-.global-search i{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:14px;}
-.global-search .kbd-hint{
-  position:absolute; right:10px; top:50%; transform:translateY(-50%);
-  font-size:10px; color:var(--text-muted);
-  border:1px solid var(--border-color); border-radius:4px; padding:1px 5px;
-  background:#fff;
-}
-
 .topbar-right{display:flex; align-items:center; gap:8px; margin-left:auto;}
-
-.plant-selector{
-  display:flex; align-items:center; gap:8px;
-  height:36px; padding:0 12px 0 10px;
-  border:1px solid var(--border-color); border-radius:10px;
-  background:var(--bg-input); cursor:pointer;
-  font-size:11.5px; color:var(--text-primary); font-weight:500;
-}
-.plant-selector i.bi-geo-alt-fill{color:var(--primary-teal); font-size:13px;}
-.plant-selector i.bi-chevron-down{font-size:10px; color:var(--text-muted); margin-left:2px;}
 
 .icon-btn{
   width:36px; height:36px; border-radius:10px;
@@ -330,6 +283,24 @@ a{text-decoration:none;}
 .user-meta{display:flex; flex-direction:column; line-height:1.15;}
 .user-meta .u-name{font-size:11.5px; font-weight:600; color:var(--text-primary);}
 .user-meta .u-role{font-size:9.5px; color:var(--text-muted);}
+
+.user-dropdown-menu{
+  min-width:190px; padding:6px;
+  border:1px solid var(--border-color); border-radius:12px;
+  box-shadow:0 10px 30px rgba(4,69,61,.14);
+  font-family:'Poppins', sans-serif;
+}
+.user-dropdown-menu .dropdown-item{
+  display:flex; align-items:center; gap:10px;
+  height:36px; padding:0 10px; border-radius:8px;
+  font-size:12px; color:var(--text-primary);
+}
+.user-dropdown-menu .dropdown-item i{font-size:14px; color:var(--text-muted); width:16px; text-align:center;}
+.user-dropdown-menu .dropdown-item:hover{background:var(--pale-mint); color:var(--deep-emerald);}
+.user-dropdown-menu .dropdown-item:hover i{color:var(--primary-teal);}
+.user-dropdown-menu .dropdown-item.text-danger:hover{background:var(--danger-bg); color:var(--danger);}
+.user-dropdown-menu .dropdown-item.text-danger:hover i{color:var(--danger);}
+.user-dropdown-menu .dropdown-divider{margin:4px 2px;}
 
 /* ============================================================
    PAGE CONTENT
@@ -528,7 +499,6 @@ a{text-decoration:none;}
 }
 @media (max-width:768px){
   .kpi-row{grid-template-columns:repeat(2,1fr);}
-  .global-search{display:none;}
 }
 
 /* ============================================================
@@ -812,12 +782,6 @@ textarea.form-control-sm2{height:auto; padding:10px 12px;}
 
   </div>
 
-  <div class="sidebar-footer">
-    <div class="plant-chip">
-      <i class="bi bi-geo-alt-fill"></i>
-      <div class="plant-text">Plant 01 – Hyderabad</div>
-    </div>
-  </div>
 </nav>
 
 <!-- ============================================================
@@ -832,33 +796,27 @@ textarea.form-control-sm2{height:auto; padding:10px 12px;}
       <div class="bc-current" id="bcCurrent">Dashboard</div>
     </div>
 
-    <div class="global-search">
-      <i class="bi bi-search"></i>
-      <input type="text" placeholder="Search batches, materials, vendors, documents…">
-      <span class="kbd-hint">⌘K</span>
-    </div>
-
     <div class="topbar-right">
-      <div class="plant-selector">
-        <i class="bi bi-geo-alt-fill"></i>
-        <span>Plant 01 – Hyderabad</span>
-        <i class="bi bi-chevron-down"></i>
-      </div>
-
-      <button class="icon-btn" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
-
       <button class="icon-btn" title="Notifications">
         <i class="bi bi-bell"></i>
         <span class="notif-dot">9</span>
       </button>
 
-      <div class="user-chip">
-        <div class="user-avatar">RK</div>
-        <div class="user-meta">
-          <span class="u-name">Ramakrishna</span>
-          <span class="u-role" id="uRole">QA Manager</span>
+      <div class="dropdown">
+        <div class="user-chip" data-bs-toggle="dropdown" aria-expanded="false" role="button">
+          <div class="user-avatar">RK</div>
+          <div class="user-meta">
+            <span class="u-name">Ramakrishna</span>
+            <span class="u-role" id="uRole">QA Manager</span>
+          </div>
+          <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text-muted);"></i>
         </div>
-        <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text-muted);"></i>
+        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i>My Account</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i>Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right"></i>Logout</a></li>
+        </ul>
       </div>
     </div>
   </header>
