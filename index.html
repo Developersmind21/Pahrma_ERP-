@@ -661,81 +661,6 @@ textarea.form-control-sm2{height:auto; padding:10px 12px;}
       </div>
     </div>
 
-    <div class="nav-accordion" data-module="procurement">
-      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-cart3 acc-icon"></i><span class="acc-title">Procurement</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Procurement</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link" data-page="purchase-requisitions" onclick="showPage('purchase-requisitions')"><i class="bi bi-file-earmark-text"></i><span class="label-text">Purchase Requisitions</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-cart-check"></i><span class="label-text">Purchase Orders</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-truck"></i><span class="label-text">Goods Receipt</span><span class="nav-badge">3</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-building"></i><span class="label-text">Suppliers</span></a></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-accordion" data-module="quality">
-      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-award acc-icon"></i><span class="acc-title">Quality</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Quality</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-data"></i><span class="label-text">Sampling Plan</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-flask"></i><span class="label-text">Quality Control</span><span class="nav-badge">7</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-shield-exclamation"></i><span class="label-text">Quarantine</span><span class="nav-badge">12</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-repeat"></i><span class="label-text">Change Control</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-exclamation-triangle"></i><span class="label-text">Deviations</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-check2-square"></i><span class="label-text">CAPA</span></a></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-accordion" data-module="warehouse">
-      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-boxes acc-icon"></i><span class="acc-title">Warehouse</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Warehouse</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-boxes"></i><span class="label-text">Inventory</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-3"></i><span class="label-text">Batch Management</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-pin-map"></i><span class="label-text">Storage Locations</span></a></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-accordion" data-module="production">
-      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-gear-wide-connected acc-icon"></i><span class="acc-title">Production</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Production</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-gear"></i><span class="label-text">Manufacturing Orders</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-collection"></i><span class="label-text">Batch Production</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-seam"></i><span class="label-text">Packaging</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-cpu"></i><span class="label-text">Equipment</span></a></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-accordion" data-module="dispatch">
-      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-send acc-icon"></i><span class="acc-title">Dispatch</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Dispatch</span>
-      </button>
-      <div class="accordion-body">
-        <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-receipt"></i><span class="label-text">Sales Orders</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-send"></i><span class="label-text">Dispatch</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-counterclockwise"></i><span class="label-text">Returns</span></a></div>
-        </div>
-      </div>
-    </div>
-
     <div class="nav-accordion" data-module="master-data">
       <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
         <i class="bi bi-database acc-icon"></i><span class="acc-title">Master Data</span><i class="bi bi-chevron-down acc-chevron"></i>
@@ -743,37 +668,158 @@ textarea.form-control-sm2{height:auto; padding:10px 12px;}
       </button>
       <div class="accordion-body">
         <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-3"></i><span class="label-text">Organization</span></a></div>
           <div class="nav-item"><a class="nav-link"><i class="bi bi-capsule2"></i><span class="label-text">Materials</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-person-lines-fill"></i><span class="label-text">Customers</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-building-check"></i><span class="label-text">Suppliers</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-tools"></i><span class="label-text">Equipment Master</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-person-lines-fill"></i><span class="label-text">Business Partners</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-building"></i><span class="label-text">Warehouse</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-cart3"></i><span class="label-text">Purchasing</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-boxes"></i><span class="label-text">Inventory</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-award"></i><span class="label-text">Quality</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-sliders"></i><span class="label-text">Configuration</span></a></div>
         </div>
       </div>
     </div>
 
-    <div class="nav-accordion" data-module="reports">
+    <div class="nav-accordion" data-module="purchasing">
       <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-bar-chart-line acc-icon"></i><span class="acc-title">Reports</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Reports</span>
+        <i class="bi bi-cart-check acc-icon"></i><span class="acc-title">Purchasing</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Purchasing</span>
       </button>
       <div class="accordion-body">
         <div class="accordion-body-inner">
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="label-text">Operational</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-pulse"></i><span class="label-text">Quality</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-file-earmark-lock2"></i><span class="label-text">Compliance</span></a></div>
+          <div class="nav-item"><a class="nav-link" data-page="purchase-requisitions" onclick="showPage('purchase-requisitions')"><i class="bi bi-file-earmark-text"></i><span class="label-text">Purchase Requisition</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-envelope-paper"></i><span class="label-text">Request for Quotation (RFQ)</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-bar-chart-steps"></i><span class="label-text">Quotation Comparison</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-cart-check"></i><span class="label-text">Purchase Order</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-file-earmark-ruled"></i><span class="label-text">Purchase Contracts</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-calendar3"></i><span class="label-text">Purchase Scheduling</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-clock-history"></i><span class="label-text">Purchase History</span></a></div>
         </div>
       </div>
     </div>
 
-    <div class="nav-accordion" data-module="admin">
+    <div class="nav-accordion" data-module="goods-receipt">
       <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-        <i class="bi bi-shield-lock acc-icon"></i><span class="acc-title">Admin</span><i class="bi bi-chevron-down acc-chevron"></i>
-        <span class="sidebar-tooltip">Admin</span>
+        <i class="bi bi-truck acc-icon"></i><span class="acc-title">Goods Receipt</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Goods Receipt</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-truck-front"></i><span class="label-text">Advance Shipment Notice</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-arrow-in-down"></i><span class="label-text">Goods Receipt</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-check"></i><span class="label-text">Inspection Receipt</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-shield-exclamation"></i><span class="label-text">Quarantine Receipt</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-upc-scan"></i><span class="label-text">Barcode Labels</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-journal-text"></i><span class="label-text">Receipt Register</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="inventory-management">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-boxes acc-icon"></i><span class="acc-title">Inventory Management</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Inventory Management</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-grid-3x3-gap"></i><span class="label-text">Stock Overview</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-arrow-up"></i><span class="label-text">Goods Issue</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-arrow-in-down"></i><span class="label-text">Goods Receipt</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-left-right"></i><span class="label-text">Stock Transfer</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-journal-arrow-up"></i><span class="label-text">Transfer Posting</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-sliders2"></i><span class="label-text">Stock Adjustment</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-3"></i><span class="label-text">Batch Management</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-upc"></i><span class="label-text">Serial Number Management</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-hourglass-split"></i><span class="label-text">Expiry Management</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-journal-bookmark"></i><span class="label-text">Material Ledger</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="quality-management">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-patch-check acc-icon"></i><span class="acc-title">Quality Management</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Quality Management</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-data"></i><span class="label-text">Sampling</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-search"></i><span class="label-text">Inspection</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-check2-circle"></i><span class="label-text">Usage Decision</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-unlock"></i><span class="label-text">Material Release</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-x-circle"></i><span class="label-text">Material Rejection</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-repeat"></i><span class="label-text">Retest</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-exclamation-triangle"></i><span class="label-text">Deviations</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-check2-square"></i><span class="label-text">CAPA</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="warehouse-management">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-buildings acc-icon"></i><span class="acc-title">Warehouse Management</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Warehouse Management</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-seam"></i><span class="label-text">Put Away</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-grid"></i><span class="label-text">Bin Management</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-basket"></i><span class="label-text">Picking</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box"></i><span class="label-text">Packing</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-repeat"></i><span class="label-text">Internal Transfer</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-truck"></i><span class="label-text">Warehouse Transfers</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-clockwise"></i><span class="label-text">Cycle Counting</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-display"></i><span class="label-text">Warehouse Monitor</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="physical-inventory">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-clipboard-data acc-icon"></i><span class="acc-title">Physical Inventory</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Physical Inventory</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-123"></i><span class="label-text">Physical Count</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-check2-all"></i><span class="label-text">Count Verification</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-down-up"></i><span class="label-text">Inventory Differences</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-pencil-square"></i><span class="label-text">Inventory Adjustment</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-lock"></i><span class="label-text">Inventory Closing</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="reports-analytics">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-bar-chart-line acc-icon"></i><span class="acc-title">Reports &amp; Analytics</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Reports &amp; Analytics</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-cart3"></i><span class="label-text">Purchasing Reports</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-boxes"></i><span class="label-text">Inventory Reports</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-building"></i><span class="label-text">Warehouse Reports</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-award"></i><span class="label-text">Quality Reports</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-3"></i><span class="label-text">Batch Traceability</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-hourglass-split"></i><span class="label-text">Expiry Reports</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-graph-up-arrow"></i><span class="label-text">Vendor Performance</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-speedometer2"></i><span class="label-text">Dashboard Analytics</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="administration">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-shield-lock acc-icon"></i><span class="acc-title">Administration</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Administration</span>
       </button>
       <div class="accordion-body">
         <div class="accordion-body-inner">
           <div class="nav-item"><a class="nav-link"><i class="bi bi-people"></i><span class="label-text">Users</span></a></div>
-          <div class="nav-item"><a class="nav-link"><i class="bi bi-key"></i><span class="label-text">Roles &amp; Permissions</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-key"></i><span class="label-text">Roles</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-2"></i><span class="label-text">Approval Workflow</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-hash"></i><span class="label-text">Number Series</span></a></div>
           <div class="nav-item"><a class="nav-link"><i class="bi bi-journal-check"></i><span class="label-text">Audit Trail</span></a></div>
           <div class="nav-item"><a class="nav-link"><i class="bi bi-sliders"></i><span class="label-text">System Settings</span></a></div>
         </div>
