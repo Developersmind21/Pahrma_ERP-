@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PharmaFlow ERP</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   PharmaFlow ERP — Design Tokens (per PRD Section 5)
+   ============================================================ */
+:root{
+  /* Primary Brand Colors */
+  --primary-teal:#157A6E;
+  --hover-teal:#198C7E;
+  --deep-emerald:#0B5C53;
+  --dark-teal-green:#04453D;
+  --bright-turquoise:#36CBBE;
+  --aqua-mint:#54D6CB;
+  --light-mint:#AEE7DF;
+  --pale-mint:#DDF4F0;
+
+  /* Sidebar Colors */
+  --sidebar-bg-top:#04453D;
+  --sidebar-bg-bottom:#033A34;
+  --sidebar-active-bg:#0D8F80;
+  --sidebar-active-glow:#15A494;
+  --sidebar-menu-text:#FFFFFF;
+  --sidebar-hover:#0A6F64;
+  --sidebar-divider:#0F5E56;
+
+  /* Dashboard Background Colors */
+  --bg-main:#F8FAFA;
+  --bg-card:#FFFFFF;
+  --bg-input:#FFFFFF;
+  --bg-table-header:#DDF4F0;
+  --bg-hover-row:#DDF4F0;
+  --bg-footer-status:#EEF9F7;
+
+  /* Border & Divider Colors */
+  --border-color:#E6EDED;
+  --border-main:#E5E7EB;
+  --border-card:#E6EDED;
+  --border-table:#EDF2F7;
+  --border-input:#DDE5E7;
+  --divider-line:#F1F5F9;
+
+  /* Typography Colors */
+  --text-primary:#1F2937;
+  --text-heading-2:#374151;
+  --text-secondary:#4B5563;
+  --text-muted:#6B7280;
+  --text-placeholder:#9CA3AF;
+  --text-disabled:#D1D5DB;
+  --text-white:#FFFFFF;
+
+  /* Neutral (Draft / low-priority) */
+  --neutral:#6B7280;
+  --neutral-bg:#F1F5F9;
+
+  /* General semantic tokens (Table Status family) */
+  --success:#16A34A; --success-bg:#DCFCE7;
+  --warning:#D97706; --warning-bg:#FEF3C7;
+  --danger:#DC2626;  --danger-bg:#FEE2E2;
+  --info:#2563EB;    --info-bg:#DBEAFE;
+
+  /* Compliance banner */
+  --compliance-bg:#EAF8F5;
+  --compliance-border:#CBEDE6;
+  --compliance-text:#0F766E;
+  --compliance-dot:#14B8A6;
+
+  --sidebar-collapsed:72px;
+  --sidebar-expanded:264px;
+  --header-height:64px;
+}
+
+*{box-sizing:border-box;}
+body{
+  font-family:'Poppins', sans-serif;
+  background:var(--bg-main);
+  color:var(--text-primary);
+  font-size:12px;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:6px; height:6px;}
+::-webkit-scrollbar-thumb{background:var(--aqua-mint); border-radius:10px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+a{text-decoration:none;}
+
+/* ============================================================
+   SIDEBAR — Section 5.5
+   ============================================================ */
+.sidebar{
+  position:fixed; top:0; left:0; bottom:0;
+  width:var(--sidebar-expanded);
+  background:linear-gradient(180deg, var(--sidebar-bg-top), var(--sidebar-bg-bottom));
+  z-index:1030;
+  overflow-y:auto; overflow-x:hidden;
+  transition:width .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+  box-shadow:2px 0 16px rgba(4,69,61,.18);
+}
+.sidebar.is-collapsed{width:var(--sidebar-collapsed);}
+.sidebar-brand{
+  height:var(--header-height);
+  display:flex; align-items:center;
+  padding:0 16px 0 22px;
+  flex-shrink:0;
+  border-bottom:1px solid var(--sidebar-divider);
+}
+.sidebar-brand .brand-icon{
+  width:34px; height:34px; min-width:34px;
+  background:rgba(255,255,255,.16);
+  border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; color:#fff;
+}
+.sidebar-brand .brand-text{
+  color:#fff; font-weight:600; font-size:15px;
+  white-space:nowrap; opacity:1; margin-left:12px;
+  transition:opacity .15s ease;
+}
+.sidebar.is-collapsed .sidebar-brand .brand-text{opacity:0; width:0; margin-left:0;}
+.sidebar-collapse-btn{
+  margin-left:auto; width:26px; height:26px; flex-shrink:0;
+  border:none; border-radius:7px;
+  background:rgba(255,255,255,.14); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:12px;
+  transition:background .15s ease, transform .3s cubic-bezier(.4,0,.2,1);
+}
+.sidebar-collapse-btn:hover{background:rgba(255,255,255,.26);}
+.sidebar.is-collapsed .sidebar-collapse-btn{transform:rotate(180deg); margin-left:0;}
+
+.sidebar-scroll{flex:1; padding:12px 10px 20px;}
+
+/* ---- Accordion module group ---- */
+.nav-group{margin:2px 0;}
+.nav-accordion{margin:3px 0;}
+.accordion-header{
+  width:100%; display:flex; align-items:center; gap:10px;
+  height:40px; padding:0 10px;
+  border:none; border-radius:10px;
+  background:transparent;
+  color:rgba(255,255,255,.92);
+  font-family:inherit; font-size:11px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase;
+  white-space:nowrap; cursor:pointer;
+  transition:background .15s ease;
+}
+.accordion-header:hover{background:var(--sidebar-hover);}
+.nav-accordion.is-open > .accordion-header{background:var(--sidebar-hover);}
+.acc-icon{font-size:15px; min-width:22px; text-align:center; flex-shrink:0; opacity:.9;}
+.acc-title{flex:1; text-align:left; overflow:hidden; text-overflow:ellipsis;}
+.acc-chevron{
+  font-size:11px; flex-shrink:0; opacity:.75;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.nav-accordion.is-open > .accordion-header .acc-chevron{transform:rotate(180deg);}
+
+.accordion-body{
+  max-height:0; overflow:hidden;
+  transition:max-height .35s cubic-bezier(.4,0,.2,1);
+}
+.accordion-body-inner{
+  padding:4px 0 6px 14px; margin-left:20px;
+  border-left:1px solid var(--sidebar-divider);
+  display:flex; flex-direction:column; gap:2px;
+}
+
+.nav-item{position:relative; margin:2px 0;}
+.nav-link{
+  display:flex; align-items:center;
+  height:36px; padding:0 12px;
+  border-radius:9px;
+  color:rgba(255,255,255,.82);
+  font-size:12.5px; font-weight:400;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease;
+  position:relative;
+}
+.nav-link i{font-size:15px; min-width:24px; text-align:center; flex-shrink:0;}
+.nav-link .label-text{opacity:1; margin-left:8px; transition:opacity .15s ease; overflow:hidden; text-overflow:ellipsis;}
+.sidebar.is-collapsed .nav-link .label-text{opacity:0; width:0; margin-left:0;}
+.sidebar.is-collapsed .acc-title,
+.sidebar.is-collapsed .acc-chevron{opacity:0; width:0;}
+.sidebar.is-collapsed .accordion-header{gap:0; justify-content:center; padding:0;}
+.nav-link:hover{background:var(--sidebar-hover); color:#fff;}
+.nav-link.active{
+  background:var(--sidebar-active-bg);
+  color:#fff; font-weight:500;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18) inset, 0 0 14px rgba(21,164,148,.45);
+}
+.nav-link.active::before{
+  content:'';
+  position:absolute; left:-10px; top:50%; transform:translateY(-50%);
+  width:4px; height:20px; border-radius:4px;
+  background:#fff;
+}
+.nav-badge{
+  margin-left:auto; opacity:1; transition:opacity .15s ease;
+  background:#fff; color:var(--deep-emerald);
+  font-size:9.5px; font-weight:700;
+  border-radius:20px; padding:1px 7px;
+}
+.sidebar.is-collapsed .nav-badge{opacity:0; width:0; padding:0;}
+
+.sidebar-tooltip{
+  position:absolute; left:66px; top:50%; transform:translateY(-50%);
+  background:#1F2937; color:#fff;
+  padding:5px 10px; border-radius:6px;
+  font-size:11px; white-space:nowrap;
+  opacity:0; pointer-events:none;
+  transition:opacity .12s ease;
+  z-index:1050;
+}
+.sidebar.is-collapsed .nav-item:hover .sidebar-tooltip,
+.sidebar.is-collapsed .nav-accordion:hover .sidebar-tooltip{opacity:1;}
+.sidebar:not(.is-collapsed) .sidebar-tooltip{display:none;}
+
+.sidebar-footer{
+  padding:12px; border-top:1px solid var(--sidebar-divider);
+  flex-shrink:0;
+}
+.plant-chip{
+  display:flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,.12);
+  border-radius:10px; padding:8px 10px;
+  color:#fff;
+}
+.plant-chip i{font-size:15px;}
+.plant-chip .plant-text{opacity:1; transition:opacity .15s ease; white-space:nowrap; overflow:hidden;}
+.sidebar.is-collapsed .plant-chip .plant-text{opacity:0; width:0;}
+.sidebar.is-collapsed .plant-chip{justify-content:center;}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.main-wrap{
+  margin-left:var(--sidebar-expanded);
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  transition:margin-left .3s ease;
+}
+.main-wrap.is-collapsed{margin-left:var(--sidebar-collapsed);}
+
+/* ============================================================
+   HEADER — Section 5.6
+   ============================================================ */
+.topbar{
+  height:var(--header-height);
+  background:#fff;
+  border-bottom:1px solid var(--border-color);
+  display:flex; align-items:center;
+  gap:18px; padding:0 22px;
+  position:sticky; top:0; z-index:1020;
+}
+.breadcrumb-wrap{display:flex; flex-direction:column; min-width:150px;}
+.breadcrumb-wrap .bc-trail{font-size:10.5px; color:var(--text-muted);}
+.breadcrumb-wrap .bc-current{font-size:16px; font-weight:600; color:var(--text-primary); margin-top:1px;}
+
+.global-search{
+  flex:1; max-width:420px;
+  position:relative;
+}
+.global-search input{
+  width:100%; height:36px;
+  background:var(--bg-input);
+  border:1px solid var(--border-color);
+  border-radius:10px;
+  padding:0 14px 0 36px;
+  font-size:12px; font-family:'Poppins',sans-serif;
+  color:var(--text-primary);
+}
+.global-search input:focus{outline:none; border-color:var(--primary-teal); box-shadow:0 0 0 3px rgba(21,122,110,.12);}
+.global-search i{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:14px;}
+.global-search .kbd-hint{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  font-size:10px; color:var(--text-muted);
+  border:1px solid var(--border-color); border-radius:4px; padding:1px 5px;
+  background:#fff;
+}
+
+.topbar-right{display:flex; align-items:center; gap:8px; margin-left:auto;}
+
+.plant-selector{
+  display:flex; align-items:center; gap:8px;
+  height:36px; padding:0 12px 0 10px;
+  border:1px solid var(--border-color); border-radius:10px;
+  background:var(--bg-input); cursor:pointer;
+  font-size:11.5px; color:var(--text-primary); font-weight:500;
+}
+.plant-selector i.bi-geo-alt-fill{color:var(--primary-teal); font-size:13px;}
+.plant-selector i.bi-chevron-down{font-size:10px; color:var(--text-muted); margin-left:2px;}
+
+.icon-btn{
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--border-color); background:#fff;
+  color:var(--text-secondary); font-size:15px; cursor:pointer;
+  position:relative;
+}
+.icon-btn:hover{background:var(--bg-hover-row); color:var(--primary-teal);}
+.notif-dot{
+  position:absolute; top:-4px; right:-4px;
+  min-width:16px; height:16px; border-radius:20px;
+  background:var(--danger); color:#fff;
+  font-size:9px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff; padding:0 3px;
+}
+
+.user-chip{
+  display:flex; align-items:center; gap:9px;
+  padding:4px 10px 4px 4px; border-radius:10px;
+  border:1px solid var(--border-color); background:#fff; cursor:pointer;
+}
+.user-avatar{
+  width:28px; height:28px; border-radius:8px;
+  background:linear-gradient(135deg,var(--primary-teal),var(--deep-emerald));
+  color:#fff; font-size:11px; font-weight:600;
+  display:flex; align-items:center; justify-content:center;
+}
+.user-meta{display:flex; flex-direction:column; line-height:1.15;}
+.user-meta .u-name{font-size:11.5px; font-weight:600; color:var(--text-primary);}
+.user-meta .u-role{font-size:9.5px; color:var(--text-muted);}
+
+/* ============================================================
+   PAGE CONTENT
+   ============================================================ */
+.page{padding:22px;}
+.page-title{font-size:20px; font-weight:600; color:var(--text-primary); margin:0;}
+.page-subtitle{font-size:12px; color:var(--text-secondary); margin-top:2px;}
+
+.compliance-strip{
+  display:flex; align-items:center; gap:18px;
+  background:var(--compliance-bg); border:1px solid var(--compliance-border);
+  border-radius:10px; padding:8px 16px; margin-top:14px;
+  font-size:11px; color:var(--compliance-text); font-weight:500;
+}
+.compliance-strip .dot{width:5px;height:5px;border-radius:50%;background:var(--compliance-dot); display:inline-block;}
+.compliance-strip span.item{display:flex; align-items:center; gap:6px;}
+
+/* Glass card - Section 5.4 */
+.glass-card{
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.6);
+  border-radius:16px;
+  box-shadow:0 4px 24px rgba(11,92,83,.08), 0 1px 2px rgba(11,92,83,.06);
+}
+.plain-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:16px;
+}
+
+/* KPI Cards - Section 6.1 */
+.kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:20px;}
+.kpi-card{
+  padding:18px; position:relative; overflow:hidden;
+}
+.kpi-card::after{
+  content:''; position:absolute; right:-30px; top:-30px;
+  width:100px; height:100px; border-radius:50%;
+  background:var(--icon-tint, rgba(21,122,110,.08));
+}
+.kpi-icon{
+  width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; margin-bottom:12px; position:relative; z-index:1;
+}
+.kpi-label{font-size:11px; color:var(--text-secondary); font-weight:500; position:relative; z-index:1;}
+.kpi-value{font-size:24px; font-weight:700; color:var(--text-primary); margin-top:3px; position:relative; z-index:1;}
+.kpi-trend{
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:10.5px; font-weight:600; margin-top:8px;
+  padding:2px 7px; border-radius:20px; position:relative; z-index:1;
+}
+.trend-up{background:var(--success-bg); color:var(--success);}
+.trend-down{background:var(--danger-bg); color:var(--danger);}
+
+/* Section headers */
+.section-card{padding:18px;}
+.section-title{font-size:14px; font-weight:600; color:var(--text-primary); display:flex; align-items:center; justify-content:between;}
+.section-head-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.section-link{font-size:11px; color:var(--primary-teal); font-weight:500; cursor:pointer;}
+.section-link:hover{text-decoration:underline;}
+
+/* Charts row */
+.charts-row{display:grid; grid-template-columns:1.15fr .85fr 1fr; gap:16px; margin-top:16px; align-items:stretch;}
+
+.donut-legend{display:flex; flex-direction:column; gap:9px; margin-top:14px;}
+.donut-legend .leg-item{display:flex; align-items:center; font-size:11.5px; color:var(--text-secondary);}
+.donut-legend .leg-dot{width:9px; height:9px; border-radius:3px; margin-right:8px;}
+.donut-legend .leg-val{margin-left:auto; font-weight:600; color:var(--text-primary);}
+
+/* Compliance ring */
+.ring-wrap{position:relative; width:150px; height:150px; margin:6px auto 4px;}
+.ring-center{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.ring-center .ring-num{font-size:22px; font-weight:700; color:var(--text-primary);}
+.ring-center .ring-lbl{font-size:9.5px; color:var(--text-muted);}
+.submetric-row{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border-color); font-size:11.5px;}
+.submetric-row:last-child{border-bottom:none;}
+.submetric-row .sm-bar{width:70px; height:5px; border-radius:10px; background:var(--border-color); overflow:hidden; margin:0 8px;}
+.submetric-row .sm-bar-fill{height:100%; border-radius:10px; background:var(--primary-teal);}
+
+/* Alerts panel */
+.alert-item{display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border-color); cursor:pointer;}
+.alert-item:last-child{border-bottom:none;}
+.alert-item:hover{background:var(--bg-hover-row); margin:0 -8px; padding:10px 8px; border-radius:8px;}
+.alert-icon{
+  width:30px; height:30px; border-radius:9px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:13px;
+  border:1px solid transparent;
+}
+.alert-icon.alert-critical{background:#FEE2E2; border-color:#FCA5A5; color:#EF4444;}
+.alert-icon.alert-warning{background:#FEF3C7; border-color:#FCD34D; color:#F59E0B;}
+.alert-icon.alert-info{background:#DBEAFE; border-color:#93C5FD; color:#3B82F6;}
+.alert-icon.alert-success{background:#DCFCE7; border-color:#86EFAC; color:#22C55E;}
+.alert-body{flex:1; min-width:0;}
+.alert-title{font-size:11.5px; font-weight:500; color:var(--text-primary); line-height:1.3;}
+.alert-meta{font-size:10px; color:var(--text-muted); margin-top:2px;}
+
+/* Status badges - Section 5.3 */
+.badge-status{
+  font-size:10.5px; font-weight:600; padding:4px 10px;
+  border-radius:20px; display:inline-flex; align-items:center; gap:5px;
+}
+.badge-status .dot{width:5px; height:5px; border-radius:50%;}
+.st-approved{background:#DCFCE7; color:#16A34A;}
+.st-approved .dot{background:#16A34A;}
+.st-testing{background:#DBEAFE; color:#2563EB;}
+.st-testing .dot{background:#2563EB;}
+.st-quarantine{background:#FEF3C7; color:#D97706;}
+.st-quarantine .dot{background:#D97706;}
+.st-rejected{background:#FEE2E2; color:#DC2626;}
+.st-rejected .dot{background:#DC2626;}
+.st-prequarantine{background:#E0F2FE; color:#0284C7;}
+.st-prequarantine .dot{background:#0284C7;}
+.st-retest{background:#FED7AA; color:#EA580C;}
+.st-retest .dot{background:#EA580C;}
+
+/* Table - Section 5.7 */
+.table-toolbar{display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
+.tbl-search{
+  height:32px; border:1px solid var(--border-color); border-radius:8px;
+  background:var(--bg-input); padding:0 10px 0 30px; font-size:11.5px;
+  position:relative; width:210px; font-family:'Poppins',sans-serif;
+}
+.tbl-search-wrap{position:relative;}
+.tbl-search-wrap i{position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--text-muted);}
+.filter-chip{
+  height:32px; padding:0 12px; border-radius:8px; border:1px solid var(--border-color);
+  background:#fff; font-size:11.5px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; cursor:pointer;
+}
+.filter-chip:hover{border-color:var(--primary-teal); color:var(--primary-teal);}
+.btn-export{
+  height:32px; padding:0 14px; border-radius:8px; border:none;
+  background:var(--primary-teal); color:#fff; font-size:11.5px; font-weight:500;
+  display:flex; align-items:center; gap:6px; margin-left:auto;
+}
+.btn-export:hover{background:var(--hover-teal);}
+.btn-new-analysis{
+  height:28px; padding:0 12px; border-radius:7px; border:1px solid var(--primary-teal);
+  background:#fff; color:var(--primary-teal); font-size:10.5px; font-weight:500;
+}
+.btn-new-analysis:hover{background:var(--primary-teal); color:#fff;}
+
+.data-table{width:100%; border-collapse:separate; border-spacing:0; font-size:12px;}
+.data-table thead th{
+  background:var(--bg-table-header); color:var(--text-secondary);
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.02em;
+  padding:10px 14px; text-align:left; border-bottom:1px solid var(--border-color);
+  white-space:nowrap;
+}
+.data-table thead th i{font-size:10px; margin-left:3px; color:var(--text-muted); cursor:pointer;}
+.data-table tbody td{
+  padding:11px 14px; border-bottom:1px solid var(--border-color);
+  color:var(--text-primary); vertical-align:middle;
+}
+.data-table tbody tr:hover{background:var(--bg-hover-row);}
+.data-table tbody tr:last-child td{border-bottom:none;}
+.mono{font-family:'SFMono-Regular',Consolas,monospace; font-size:11.5px; color:var(--text-secondary);}
+.qa-cell{display:flex; align-items:center; gap:7px;}
+.qa-avatar{
+  width:22px; height:22px; border-radius:6px; font-size:9.5px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; color:#fff;
+  background:linear-gradient(135deg,var(--dark-teal-green),var(--bright-turquoise));
+}
+.pagination-bar{display:flex; align-items:center; justify-content:space-between; margin-top:14px; font-size:11px; color:var(--text-muted);}
+.page-btn{
+  width:26px; height:26px; border-radius:6px; border:1px solid var(--border-color);
+  background:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:10.5px; margin-left:4px; cursor:pointer;
+}
+.page-btn.active{background:var(--primary-teal); color:#fff; border-color:var(--primary-teal);}
+.page-btn:hover:not(.active){border-color:var(--primary-teal); color:var(--primary-teal);}
+
+.dd-icon-btn{
+  width:26px; height:26px; border-radius:6px; border:1px solid var(--border-color); background:#fff;
+  display:inline-flex; align-items:center; justify-content:center; color:var(--text-muted); cursor:pointer;
+}
+.dd-icon-btn:hover{background:var(--bg-hover-row); color:var(--primary-teal);}
+
+/* Footer strip */
+.footer-strip{
+  margin-top:22px; padding:14px 20px; border-radius:14px;
+  background:linear-gradient(90deg, rgba(21,122,110,.06), rgba(174,231,223,.18));
+  border:1px solid rgba(21,122,110,.14);
+  display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap;
+}
+.footer-strip .f-item{display:flex; align-items:center; gap:7px; font-size:11px; font-weight:500; color:var(--deep-emerald);}
+.footer-strip .f-item i{font-size:14px; color:var(--success);}
+
+@media (max-width:1400px){
+  .kpi-row{grid-template-columns:repeat(3,1fr);}
+  .charts-row{grid-template-columns:1fr; }
+}
+@media (max-width:768px){
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+  .global-search{display:none;}
+}
+
+/* ============================================================
+   PURCHASE REQUISITIONS — EXTRA STYLES (merged in)
+   ============================================================ */
+.btn-primary-brand{
+  background:var(--primary-teal); border:none; color:#fff; font-weight:500; font-size:12px;
+  height:38px; padding:0 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-primary-brand:hover{background:var(--hover-teal); color:#fff;}
+.btn-outline-brand{
+  background:#fff; border:1px solid var(--border-color); color:var(--text-secondary); font-weight:500; font-size:12px;
+  height:38px; padding:0 16px; border-radius:10px; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-outline-brand:hover{border-color:var(--primary-teal); color:var(--primary-teal);}
+
+/* Summary stat strip */
+.stat-strip{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-top:18px;}
+.stat-card{padding:14px 16px; display:flex; flex-direction:column; gap:2px; cursor:pointer; border:1px solid var(--border-color); transition:border-color .15s;}
+.stat-card:hover{border-color:var(--primary-teal);}
+.stat-card.is-active{border-color:var(--primary-teal); box-shadow:0 0 0 3px rgba(21,122,110,.10);}
+.stat-card .s-label{font-size:10.5px; color:var(--text-secondary); font-weight:500; display:flex; align-items:center; gap:6px;}
+.stat-card .s-label .dot{width:7px;height:7px;border-radius:50%;}
+.stat-card .s-value{font-size:20px; font-weight:700; color:var(--text-primary);}
+
+.mono{font-family:'SFMono-Regular',Consolas,monospace; font-size:11.5px; color:var(--text-secondary);}
+.pr-no{font-weight:600; color:var(--primary-teal);}
+.dept-pill{font-size:10.5px; font-weight:500; color:var(--deep-emerald); background:var(--light-mint); padding:3px 9px; border-radius:20px;}
+.material-chip{font-size:11px;}
+.material-more{font-size:10px; color:var(--text-muted); margin-left:4px;}
+.raised-cell{display:flex; align-items:center; gap:7px;}
+.raised-avatar{width:22px; height:22px; border-radius:6px; font-size:9.5px; font-weight:600; display:flex; align-items:center; justify-content:center; color:#fff; background:linear-gradient(135deg,var(--dark-teal-green),var(--bright-turquoise));}
+
+.badge-status{font-size:10.5px; font-weight:600; padding:4px 10px; border-radius:20px; display:inline-flex; align-items:center; gap:5px;}
+.badge-status .dot{width:5px; height:5px; border-radius:50%;}
+.st-draft{background:var(--neutral-bg); color:var(--neutral);} .st-draft .dot{background:var(--neutral);}
+.st-submitted{background:var(--info-bg); color:var(--info);} .st-submitted .dot{background:var(--info);}
+.st-approved{background:var(--success-bg); color:var(--success);} .st-approved .dot{background:var(--success);}
+.st-rejected{background:var(--danger-bg); color:var(--danger);} .st-rejected .dot{background:var(--danger);}
+.st-converted{background:var(--pale-mint); color:var(--deep-emerald);} .st-converted .dot{background:var(--deep-emerald);}
+
+.priority-pill{font-size:10px; font-weight:600; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;}
+.pr-low{background:var(--neutral-bg); color:var(--text-secondary);}
+.pr-medium{background:var(--info-bg); color:var(--info);}
+.pr-high{background:var(--warning-bg); color:var(--warning);}
+.pr-urgent{background:var(--danger-bg); color:var(--danger);}
+
+/* ============================================================
+   MODALS — New Requisition + View / Approval
+   ============================================================ */
+.modal-content{border-radius:16px; border:1px solid var(--border-color); font-family:'Poppins',sans-serif;}
+.modal-header{border-bottom:1px solid var(--border-color); padding:18px 22px;}
+.modal-header .modal-title{font-size:15px; font-weight:600; color:var(--text-primary);}
+.modal-header .modal-subtitle{font-size:11px; color:var(--text-muted); margin-top:2px;}
+.modal-body{padding:20px 22px;}
+.modal-footer{border-top:1px solid var(--border-color); padding:14px 22px;}
+
+.form-section-label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted); margin:18px 0 10px;}
+.form-section-label:first-child{margin-top:0;}
+.form-label-sm{font-size:11.5px; font-weight:500; color:var(--text-secondary); margin-bottom:5px; display:block;}
+.form-label-sm .req{color:var(--danger);}
+.form-control-sm2, .form-select-sm2{
+  height:36px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-input);
+  font-size:12px; font-family:'Poppins',sans-serif; padding:0 12px; width:100%; color:var(--text-primary);
+}
+textarea.form-control-sm2{height:auto; padding:10px 12px;}
+.form-control-sm2:focus, .form-select-sm2:focus{outline:none; border-color:var(--primary-teal); box-shadow:0 0 0 3px rgba(21,122,110,.12);}
+
+.priority-toggle{display:flex; gap:8px;}
+.priority-toggle .pt-opt{
+  flex:1; text-align:center; height:36px; line-height:36px; border-radius:8px; border:1px solid var(--border-color);
+  font-size:11.5px; font-weight:500; color:var(--text-secondary); cursor:pointer; background:#fff;
+}
+.priority-toggle .pt-opt.active{border-color:var(--primary-teal); background:var(--light-mint); color:var(--deep-emerald); font-weight:600;}
+
+.line-items-table{width:100%; font-size:11.5px; border-collapse:separate; border-spacing:0;}
+.line-items-table th{background:var(--bg-table-header); font-size:10.5px; text-transform:uppercase; letter-spacing:.02em; color:var(--text-muted); font-weight:600; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border-color);}
+.line-items-table td{padding:6px 8px; border-bottom:1px solid var(--border-color); vertical-align:middle;}
+.line-items-table input, .line-items-table select{height:32px; border:1px solid var(--border-color); border-radius:6px; background:#fff; font-size:11.5px; padding:0 8px; width:100%; font-family:'Poppins',sans-serif;}
+.line-items-table input:focus, .line-items-table select:focus{outline:none; border-color:var(--primary-teal);}
+.remove-row-btn{width:26px; height:26px; border-radius:6px; border:1px solid var(--border-color); background:#fff; color:var(--danger); display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
+.remove-row-btn:hover{background:var(--danger-bg);}
+.add-row-btn{font-size:11px; color:var(--primary-teal); font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin-top:8px;}
+.add-row-btn:hover{text-decoration:underline;}
+
+.total-value-box{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--light-mint); border-radius:10px; padding:12px 16px; margin-top:12px;
+}
+.total-value-box .tv-label{font-size:11.5px; color:var(--deep-emerald); font-weight:500;}
+.total-value-box .tv-value{font-size:18px; color:var(--deep-emerald); font-weight:700;}
+
+.doD-note{
+  display:flex; gap:10px; align-items:flex-start;
+  background:var(--info-bg); border:1px solid rgba(37,99,235,.2); border-radius:10px; padding:11px 13px; margin-top:14px;
+  font-size:11px; color:#1E40AF;
+}
+.doD-note i{font-size:15px; margin-top:1px;}
+
+/* Approval stepper (View modal) */
+.approval-stepper{list-style:none; margin:0; padding:0; position:relative;}
+.approval-stepper li{display:flex; gap:14px; padding-bottom:22px; position:relative;}
+.approval-stepper li:last-child{padding-bottom:0;}
+.approval-stepper li::before{
+  content:''; position:absolute; left:13px; top:28px; bottom:0; width:2px; background:var(--border-color);
+}
+.approval-stepper li:last-child::before{display:none;}
+.step-dot{
+  width:28px; height:28px; min-width:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:13px; z-index:1; background:var(--neutral-bg); color:var(--neutral); border:2px solid #fff; box-shadow:0 0 0 1px var(--border-color);
+}
+.step-dot.done{background:var(--success-bg); color:var(--success); box-shadow:0 0 0 1px rgba(22,163,74,.3);}
+.step-dot.current{background:var(--info-bg); color:var(--info); box-shadow:0 0 0 1px rgba(37,99,235,.3);}
+.step-dot.rejected{background:var(--danger-bg); color:var(--danger); box-shadow:0 0 0 1px rgba(220,38,38,.3);}
+.step-body{padding-top:3px;}
+.step-title{font-size:12px; font-weight:600; color:var(--text-primary);}
+.step-meta{font-size:10.5px; color:var(--text-muted); margin-top:2px;}
+.step-sig{font-size:10.5px; color:var(--text-secondary); margin-top:4px; font-style:italic;}
+
+.detail-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px;}
+.detail-field .df-label{font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em;}
+.detail-field .df-value{font-size:12.5px; font-weight:600; color:var(--text-primary); margin-top:3px;}
+
+.audit-mini{font-size:11px;}
+.audit-mini th{background:var(--bg-table-header); font-size:10px; text-transform:uppercase; color:var(--text-muted); font-weight:600; padding:7px 10px; text-align:left;}
+.audit-mini td{padding:8px 10px; border-bottom:1px solid var(--border-color); color:var(--text-secondary);}
+
+.tab-nav-brand{border-bottom:1px solid var(--border-color); display:flex; gap:4px; margin-bottom:16px;}
+.tab-nav-brand .tnb-item{padding:9px 14px; font-size:12px; font-weight:500; color:var(--text-secondary); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px;}
+.tab-nav-brand .tnb-item.active{color:var(--primary-teal); border-color:var(--primary-teal); font-weight:600;}
+
+.app-page{display:none;}
+.app-page.is-visible{display:block;}
+@media (max-width:1400px){ .stat-strip{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:768px){ .stat-strip{grid-template-columns:repeat(2,1fr);} .detail-grid{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><i class="bi bi-capsule"></i></div>
+    <div class="brand-text">PharmaFlow</div>
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+  </div>
+
+  <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-item">
+        <a class="nav-link active" data-page="dashboard" onclick="showPage('dashboard')">
+          <i class="bi bi-grid-1x2-fill"></i><span class="label-text">Dashboard</span>
+          <span class="sidebar-tooltip">Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="procurement">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-cart3 acc-icon"></i><span class="acc-title">Procurement</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Procurement</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link" data-page="purchase-requisitions" onclick="showPage('purchase-requisitions')"><i class="bi bi-file-earmark-text"></i><span class="label-text">Purchase Requisitions</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-cart-check"></i><span class="label-text">Purchase Orders</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-truck"></i><span class="label-text">Goods Receipt</span><span class="nav-badge">3</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-building"></i><span class="label-text">Suppliers</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="quality">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-award acc-icon"></i><span class="acc-title">Quality</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Quality</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-data"></i><span class="label-text">Sampling Plan</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-flask"></i><span class="label-text">Quality Control</span><span class="nav-badge">7</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-shield-exclamation"></i><span class="label-text">Quarantine</span><span class="nav-badge">12</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-repeat"></i><span class="label-text">Change Control</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-exclamation-triangle"></i><span class="label-text">Deviations</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-check2-square"></i><span class="label-text">CAPA</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="warehouse">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-boxes acc-icon"></i><span class="acc-title">Warehouse</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Warehouse</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-boxes"></i><span class="label-text">Inventory</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-diagram-3"></i><span class="label-text">Batch Management</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-pin-map"></i><span class="label-text">Storage Locations</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="production">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-gear-wide-connected acc-icon"></i><span class="acc-title">Production</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Production</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-gear"></i><span class="label-text">Manufacturing Orders</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-collection"></i><span class="label-text">Batch Production</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-box-seam"></i><span class="label-text">Packaging</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-cpu"></i><span class="label-text">Equipment</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="dispatch">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-send acc-icon"></i><span class="acc-title">Dispatch</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Dispatch</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-receipt"></i><span class="label-text">Sales Orders</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-send"></i><span class="label-text">Dispatch</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-arrow-counterclockwise"></i><span class="label-text">Returns</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="master-data">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-database acc-icon"></i><span class="acc-title">Master Data</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Master Data</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-capsule2"></i><span class="label-text">Materials</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-person-lines-fill"></i><span class="label-text">Customers</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-building-check"></i><span class="label-text">Suppliers</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-tools"></i><span class="label-text">Equipment Master</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="reports">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-bar-chart-line acc-icon"></i><span class="acc-title">Reports</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Reports</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-bar-chart-line"></i><span class="label-text">Operational</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-clipboard2-pulse"></i><span class="label-text">Quality</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-file-earmark-lock2"></i><span class="label-text">Compliance</span></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-accordion" data-module="admin">
+      <button type="button" class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+        <i class="bi bi-shield-lock acc-icon"></i><span class="acc-title">Admin</span><i class="bi bi-chevron-down acc-chevron"></i>
+        <span class="sidebar-tooltip">Admin</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-people"></i><span class="label-text">Users</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-key"></i><span class="label-text">Roles &amp; Permissions</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-journal-check"></i><span class="label-text">Audit Trail</span></a></div>
+          <div class="nav-item"><a class="nav-link"><i class="bi bi-sliders"></i><span class="label-text">System Settings</span></a></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="plant-chip">
+      <i class="bi bi-geo-alt-fill"></i>
+      <div class="plant-text">Plant 01 – Hyderabad</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<div class="main-wrap" id="mainWrap">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="breadcrumb-wrap">
+      <div class="bc-trail" id="bcTrail">Home / PharmaFlow</div>
+      <div class="bc-current" id="bcCurrent">Dashboard</div>
+    </div>
+
+    <div class="global-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search batches, materials, vendors, documents…">
+      <span class="kbd-hint">⌘K</span>
+    </div>
+
+    <div class="topbar-right">
+      <div class="plant-selector">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span>Plant 01 – Hyderabad</span>
+        <i class="bi bi-chevron-down"></i>
+      </div>
+
+      <button class="icon-btn" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
+
+      <button class="icon-btn" title="Notifications">
+        <i class="bi bi-bell"></i>
+        <span class="notif-dot">9</span>
+      </button>
+
+      <div class="user-chip">
+        <div class="user-avatar">RK</div>
+        <div class="user-meta">
+          <span class="u-name">Ramakrishna</span>
+          <span class="u-role" id="uRole">QA Manager</span>
+        </div>
+        <i class="bi bi-chevron-down" style="font-size:10px;color:var(--text-muted);"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       PAGE: DASHBOARD
+       ============================================================ -->
+  <div class="app-page is-visible" id="page-dashboard">
+  <div class="page">
+
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">Good morning, Ramakrishna</h1>
+        <p class="page-subtitle">Here's what's happening across Plant 01 today, 08 Jul 2026.</p>
+      </div>
+      <div class="compliance-strip">
+        <span class="item"><span class="dot"></span> GMP Compliant</span>
+        <span class="item"><span class="dot"></span> 21 CFR Part 11 Compliant</span>
+        <span class="item"><span class="dot"></span> Data Integrity Enabled</span>
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="glass-card kpi-card" style="--icon-tint:rgba(22,160,133,.10);">
+        <div class="kpi-icon" style="background:#DFF7F3; color:#16A085;"><i class="bi bi-boxes"></i></div>
+        <div class="kpi-label">Total Batches</div>
+        <div class="kpi-value">1,284</div>
+        <span class="kpi-trend trend-up" style="background:#DDF7ED; color:#22A06B;"><i class="bi bi-arrow-up-short"></i>8.2% MoM</span>
+      </div>
+      <div class="glass-card kpi-card" style="--icon-tint:rgba(27,170,102,.10);">
+        <div class="kpi-icon" style="background:#DFF7ED; color:#1BAA66;"><i class="bi bi-check-circle"></i></div>
+        <div class="kpi-label">Approved Batches</div>
+        <div class="kpi-value">942</div>
+        <span class="kpi-trend trend-up" style="background:#DDF7ED; color:#22A06B;"><i class="bi bi-arrow-up-short"></i>5.4% MoM</span>
+      </div>
+      <div class="glass-card kpi-card" style="--icon-tint:rgba(21,157,145,.10);">
+        <div class="kpi-icon" style="background:#DDF6F2; color:#159D91;"><i class="bi bi-hourglass-split"></i></div>
+        <div class="kpi-label">In-Progress</div>
+        <div class="kpi-value">176</div>
+        <span class="kpi-trend trend-up" style="background:#DDF7ED; color:#22A06B;"><i class="bi bi-arrow-up-short"></i>2.1% MoM</span>
+      </div>
+      <div class="glass-card kpi-card" style="--icon-tint:rgba(239,68,68,.10);">
+        <div class="kpi-icon" style="background:#FFE7E7; color:#EF4444;"><i class="bi bi-x-circle"></i></div>
+        <div class="kpi-label">Rejected Batches</div>
+        <div class="kpi-value">31</div>
+        <span class="kpi-trend trend-down" style="background:#FFE8E8; color:#DC2626;"><i class="bi bi-arrow-down-short"></i>1.3% MoM</span>
+      </div>
+      <div class="glass-card kpi-card" style="--icon-tint:rgba(245,158,11,.10);">
+        <div class="kpi-icon" style="background:#FFF2E0; color:#F59E0B;"><i class="bi bi-shield-exclamation"></i></div>
+        <div class="kpi-label">Quarantine Batches</div>
+        <div class="kpi-value">135</div>
+        <span class="kpi-trend trend-up" style="background:#FFF4E5; color:#D97706;"><i class="bi bi-arrow-up-short"></i>3.7% MoM</span>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW: Donut + Compliance Ring + Alerts -->
+    <div class="charts-row">
+
+      <!-- Batch Status Overview -->
+      <div class="glass-card section-card">
+        <div class="section-head-row">
+          <div class="section-title">Batch Status Overview</div>
+          <span class="section-link">View report <i class="bi bi-arrow-right"></i></span>
+        </div>
+        <div class="row align-items-center g-3">
+          <div class="col-6">
+            <canvas id="statusDonut" height="170"></canvas>
+          </div>
+          <div class="col-6">
+            <div class="donut-legend">
+              <div class="leg-item"><span class="leg-dot" style="background:#17A86B;"></span>Approved <span class="leg-val">942 · 73%</span></div>
+              <div class="leg-item"><span class="leg-dot" style="background:#15A8A0;"></span>In-Progress <span class="leg-val">176 · 14%</span></div>
+              <div class="leg-item"><span class="leg-dot" style="background:#F59E0B;"></span>Quarantine <span class="leg-val">135 · 11%</span></div>
+              <div class="leg-item"><span class="leg-dot" style="background:#EF4444;"></span>Rejected <span class="leg-val">31 · 2%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quality Compliance Ring -->
+      <div class="glass-card section-card">
+        <div class="section-head-row">
+          <div class="section-title">Quality Compliance</div>
+        </div>
+        <div class="ring-wrap">
+          <canvas id="complianceRing" width="150" height="150"></canvas>
+          <div class="ring-center">
+            <div class="ring-num">94%</div>
+            <div class="ring-lbl">Overall Score</div>
+          </div>
+        </div>
+        <div class="mt-2">
+          <div class="submetric-row">
+            <span>Documents Reviewed</span>
+            <div class="sm-bar"><div class="sm-bar-fill" style="width:97%;"></div></div>
+            <span style="font-weight:600;">97%</span>
+          </div>
+          <div class="submetric-row">
+            <span>Batches Compliant</span>
+            <div class="sm-bar"><div class="sm-bar-fill" style="width:93%;"></div></div>
+            <span style="font-weight:600;">93%</span>
+          </div>
+          <div class="submetric-row">
+            <span>Audit Readiness</span>
+            <div class="sm-bar"><div class="sm-bar-fill" style="width:91%;"></div></div>
+            <span style="font-weight:600;">91%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Alerts -->
+      <div class="glass-card section-card">
+        <div class="section-head-row">
+          <div class="section-title">Recent Alerts</div>
+          <span class="section-link">View all</span>
+        </div>
+        <div class="alert-list">
+          <div class="alert-item">
+            <div class="alert-icon alert-critical"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <div class="alert-body">
+              <div class="alert-title">Deviation logged — Batch RM-2291, short receipt vs PO</div>
+              <div class="alert-meta">12 minutes ago · Goods Receipt</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon alert-warning"><i class="bi bi-shield-exclamation"></i></div>
+            <div class="alert-body">
+              <div class="alert-title">Batch QT-1187 in quarantine pending QA review</div>
+              <div class="alert-meta">48 minutes ago · Quarantine</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon alert-info"><i class="bi bi-clock-history"></i></div>
+            <div class="alert-body">
+              <div class="alert-title">Stability study due — Material Paracetamol IP, Lot PCM-0456</div>
+              <div class="alert-meta">2 hours ago · Expiry &amp; Retest Monitor</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon alert-success"><i class="bi bi-check2-circle"></i></div>
+            <div class="alert-body">
+              <div class="alert-title">Change control CC-0098 approved — packaging line update</div>
+              <div class="alert-meta">3 hours ago · Change Control</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon alert-warning"><i class="bi bi-hourglass-split"></i></div>
+            <div class="alert-body">
+              <div class="alert-title">Retest due in 5 days — Excipient Lactose Monohydrate LM-2201</div>
+              <div class="alert-meta">5 hours ago · Vendor Retest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RECENT QC BATCHES TABLE -->
+    <div class="plain-card section-card mt-3">
+      <div class="section-head-row">
+        <div>
+          <div class="section-title">Recent Quality Control Batches</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Live status across active Analysis Requests</div>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="tbl-search-wrap">
+          <i class="bi bi-search"></i>
+          <input class="tbl-search" type="text" placeholder="Search batch, material…">
+        </div>
+        <div class="filter-chip"><i class="bi bi-funnel"></i> Status</div>
+        <div class="filter-chip"><i class="bi bi-calendar3"></i> Sampled On</div>
+        <div class="filter-chip"><i class="bi bi-person"></i> QA Analyst</div>
+        <button class="btn-export"><i class="bi bi-download"></i> Export</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Batch No. <i class="bi bi-arrow-down-up"></i></th>
+              <th>Material / Product</th>
+              <th>Batch Size</th>
+              <th>Sampled On</th>
+              <th>Test Type</th>
+              <th>Status</th>
+              <th>QA Analyst</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="qcTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination-bar">
+        <span>Showing 1–8 of 176 active batches</span>
+        <div>
+          <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">22</button>
+          <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER COMPLIANCE STRIP -->
+    <div class="footer-strip">
+      <span class="f-item"><i class="bi bi-patch-check-fill"></i> GMP Compliant</span>
+      <span class="f-item"><i class="bi bi-patch-check-fill"></i> 21 CFR Part 11 Compliant</span>
+      <span class="f-item"><i class="bi bi-patch-check-fill"></i> Data Integrity Enabled</span>
+    </div>
+
+  </div>
+
+  </div>
+  <!-- ============================================================
+       PAGE: PURCHASE REQUISITIONS
+       ============================================================ -->
+  <div class="app-page" id="page-purchase-requisitions">
+  <div class="page">
+
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">Purchase Requisitions</h1>
+        <p class="page-subtitle">Raise, track and approve material requisitions from Warehouse &amp; Production before conversion to a Purchase Order.</p>
+      </div>
+      <button class="btn-primary-brand" data-bs-toggle="modal" data-bs-target="#newPrModal">
+        <i class="bi bi-plus-lg"></i> New Requisition
+      </button>
+    </div>
+
+    <!-- SUMMARY STAT STRIP (click-to-filter) -->
+    <div class="stat-strip">
+      <div class="stat-card plain-card is-active" data-filter="all">
+        <span class="s-label"><span class="dot" style="background:var(--primary-teal);"></span>Total PRs</span>
+        <span class="s-value">58</span>
+      </div>
+      <div class="stat-card plain-card" data-filter="draft">
+        <span class="s-label"><span class="dot" style="background:var(--neutral);"></span>Draft</span>
+        <span class="s-value">9</span>
+      </div>
+      <div class="stat-card plain-card" data-filter="submitted">
+        <span class="s-label"><span class="dot" style="background:var(--info);"></span>Pending Approval</span>
+        <span class="s-value">14</span>
+      </div>
+      <div class="stat-card plain-card" data-filter="approved">
+        <span class="s-label"><span class="dot" style="background:var(--success);"></span>Approved</span>
+        <span class="s-value">21</span>
+      </div>
+      <div class="stat-card plain-card" data-filter="converted">
+        <span class="s-label"><span class="dot" style="background:var(--deep-emerald);"></span>Converted to PO</span>
+        <span class="s-value">11</span>
+      </div>
+      <div class="stat-card plain-card" data-filter="rejected">
+        <span class="s-label"><span class="dot" style="background:var(--danger);"></span>Rejected</span>
+        <span class="s-value">3</span>
+      </div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="plain-card section-card p-3 mt-3">
+
+      <div class="table-toolbar">
+        <div class="tbl-search-wrap"><i class="bi bi-search"></i><input class="tbl-search" type="text" placeholder="Search PR No., material, requester…"></div>
+        <div class="filter-chip"><i class="bi bi-building"></i> Department</div>
+        <div class="filter-chip"><i class="bi bi-flag"></i> Priority</div>
+        <div class="filter-chip"><i class="bi bi-calendar3"></i> Required By</div>
+        <div class="filter-chip"><i class="bi bi-funnel"></i> Status</div>
+        <button class="btn-export"><i class="bi bi-download"></i> Export</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>PR No. <i class="bi bi-arrow-down-up"></i></th>
+              <th>Requesting Dept.</th>
+              <th>Material(s)</th>
+              <th>Priority</th>
+              <th>Required By</th>
+              <th>Est. Value (₹)</th>
+              <th>Raised By</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="prTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination-bar">
+        <span id="pagCount">Showing 1–16 of 58 requisitions</span>
+        <div>
+          <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+
+</div>
+
+<!-- ============================================================
+     NEW REQUISITION MODAL
+     ============================================================ -->
+<div class="modal fade" id="newPrModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">New Purchase Requisition</div>
+          <div class="modal-subtitle">PR No. will be auto-generated on save (e.g. PR-2026-0059)</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-section-label">Requisition Details</div>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label-sm">Requesting Department <span class="req">*</span></label>
+            <select class="form-select-sm2">
+              <option>Warehouse</option>
+              <option>Production</option>
+              <option>QC Lab</option>
+              <option>Packaging</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label-sm">Raised Against <span class="req">*</span></label>
+            <select class="form-select-sm2">
+              <option>Reorder Level Alert</option>
+              <option>Production Plan</option>
+              <option>Manual / Ad-hoc</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label-sm">Required-By Date <span class="req">*</span></label>
+            <input type="date" class="form-control-sm2" value="2026-07-22">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label-sm">Priority</label>
+            <div class="priority-toggle">
+              <div class="pt-opt">Low</div>
+              <div class="pt-opt active">Medium</div>
+              <div class="pt-opt">High</div>
+              <div class="pt-opt">Urgent</div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <label class="form-label-sm">Justification / Remarks <span class="req">*</span></label>
+            <input type="text" class="form-control-sm2" placeholder="e.g. Stock below reorder level for Batch Production Order MO-1123">
+          </div>
+        </div>
+
+        <div class="form-section-label">Line Items</div>
+        <table class="line-items-table">
+          <thead>
+            <tr>
+              <th style="width:26%;">Material</th>
+              <th>Current Stock</th>
+              <th>Reorder Level</th>
+              <th>Qty Requested</th>
+              <th>UOM</th>
+              <th>Est. Unit Rate (₹)</th>
+              <th>Line Value (₹)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="lineItemsBody">
+            <tr>
+              <td><select><option>Paracetamol IP</option><option>Lactose Monohydrate</option><option>Microcrystalline Cellulose</option><option>Magnesium Stearate</option></select></td>
+              <td><input value="180 kg" disabled></td>
+              <td><input value="250 kg" disabled></td>
+              <td><input type="number" value="500" class="qty-input"></td>
+              <td><input value="kg" disabled></td>
+              <td><input type="number" value="620" class="rate-input"></td>
+              <td class="line-value">3,10,000</td>
+              <td><button class="remove-row-btn"><i class="bi bi-trash3"></i></button></td>
+            </tr>
+            <tr>
+              <td><select><option>Blister Foil — PVC/PVDC</option><option>Paracetamol IP</option><option>Ibuprofen BP</option></select></td>
+              <td><input value="4,200 m" disabled></td>
+              <td><input value="6,000 m" disabled></td>
+              <td><input type="number" value="8000" class="qty-input"></td>
+              <td><input value="m" disabled></td>
+              <td><input type="number" value="14" class="rate-input"></td>
+              <td class="line-value">1,12,000</td>
+              <td><button class="remove-row-btn"><i class="bi bi-trash3"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="add-row-btn" id="addLineItem"><i class="bi bi-plus-circle"></i> Add material line</div>
+
+        <div class="total-value-box">
+          <span class="tv-label">Total Estimated Requisition Value</span>
+          <span class="tv-value" id="totalValueDisplay">₹ 4,22,000</span>
+        </div>
+
+        <div class="form-section-label">Attachment</div>
+        <input type="file" class="form-control-sm2" style="height:auto; padding:8px 12px;">
+        <div style="font-size:10.5px; color:var(--text-muted); margin-top:5px;">Optional — attach production plan or reorder report supporting this requisition.</div>
+
+        <div class="doD-note">
+          <i class="bi bi-info-circle-fill"></i>
+          <div>Requisitions above <strong>₹2,00,000</strong> are routed for a second-level approval automatically. Per segregation-of-duty controls, you will not be able to approve a requisition you raised yourself.</div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline-brand" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-outline-brand"><i class="bi bi-save2"></i> Save as Draft</button>
+        <button class="btn-primary-brand"><i class="bi bi-send-check"></i> Submit for Approval</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     VIEW / APPROVAL MODAL
+     ============================================================ -->
+<div class="modal fade" id="viewPrModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="vpTitle">PR-2026-0047 <span class="badge-status st-submitted" style="margin-left:8px;"><span class="dot"></span>Pending Approval</span></div>
+          <div class="modal-subtitle" id="vpSubtitle">Raised by Warehouse · 05 Jul 2026</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="tab-nav-brand">
+          <div class="tnb-item active" data-vtab="details">Details</div>
+          <div class="tnb-item" data-vtab="approval">Approval Timeline</div>
+          <div class="tnb-item" data-vtab="audit">Audit Trail</div>
+        </div>
+
+        <!-- DETAILS TAB -->
+        <div class="vtab-pane" id="vtab-details">
+          <div class="detail-grid">
+            <div class="detail-field"><div class="df-label">Requesting Dept.</div><div class="df-value" id="dDept">Warehouse</div></div>
+            <div class="detail-field"><div class="df-label">Raised Against</div><div class="df-value" id="dAgainst">Reorder Level Alert</div></div>
+            <div class="detail-field"><div class="df-label">Priority</div><div class="df-value" id="dPriority">High</div></div>
+            <div class="detail-field"><div class="df-label">Required By</div><div class="df-value" id="dRequired">18 Jul 2026</div></div>
+          </div>
+          <table class="line-items-table mb-2">
+            <thead><tr><th>Material</th><th>Qty Requested</th><th>UOM</th><th>Est. Unit Rate</th><th>Line Value</th></tr></thead>
+            <tbody id="viewLineItems"></tbody>
+          </table>
+          <div class="total-value-box">
+            <span class="tv-label">Total Estimated Value</span>
+            <span class="tv-value" id="dTotalValue">₹ 3,10,000</span>
+          </div>
+          <div class="form-section-label">Justification</div>
+          <div style="font-size:12px; color:var(--text-secondary);" id="dJustification">Stock projected to fall below reorder level before next scheduled PO cycle; required to support Batch Production Order MO-1123.</div>
+
+          <div class="doD-note" id="dodBlock">
+            <i class="bi bi-shield-lock-fill"></i>
+            <div>You raised this requisition. Segregation-of-duty controls prevent you from approving or rejecting your own requisition — routed to <strong>QA/Procurement Manager</strong>.</div>
+          </div>
+        </div>
+
+        <!-- APPROVAL TAB -->
+        <div class="vtab-pane d-none" id="vtab-approval">
+          <ul class="approval-stepper">
+            <li>
+              <div class="step-dot done"><i class="bi bi-check-lg"></i></div>
+              <div class="step-body">
+                <div class="step-title">Requisition Raised</div>
+                <div class="step-meta">S. Warehouse Executive · 05 Jul 2026, 09:14 AM</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-dot done"><i class="bi bi-check-lg"></i></div>
+              <div class="step-body">
+                <div class="step-title">Submitted for Approval</div>
+                <div class="step-meta">S. Warehouse Executive · 05 Jul 2026, 09:20 AM</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-dot current"><i class="bi bi-hourglass-split"></i></div>
+              <div class="step-body">
+                <div class="step-title">Level 1 Approval — Procurement Officer</div>
+                <div class="step-meta">Awaiting action · SLA 24 hrs</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-dot"><i class="bi bi-dot"></i></div>
+              <div class="step-body">
+                <div class="step-title">Level 2 Approval — Procurement Manager</div>
+                <div class="step-meta">Required — requisition value exceeds ₹2,00,000</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-dot"><i class="bi bi-dot"></i></div>
+              <div class="step-body">
+                <div class="step-title">Converted to Purchase Order</div>
+                <div class="step-meta">Not yet available</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- AUDIT TAB -->
+        <div class="vtab-pane d-none" id="vtab-audit">
+          <table class="audit-mini w-100">
+            <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Before → After</th></tr></thead>
+            <tbody>
+              <tr><td>05 Jul 2026, 09:14 AM</td><td>S. Warehouse Executive</td><td>Created (Draft)</td><td>— → Draft</td></tr>
+              <tr><td>05 Jul 2026, 09:18 AM</td><td>S. Warehouse Executive</td><td>Line item quantity edited</td><td>Qty 450 → 500</td></tr>
+              <tr><td>05 Jul 2026, 09:20 AM</td><td>S. Warehouse Executive</td><td>Submitted for approval</td><td>Draft → Submitted</td></tr>
+            </tbody>
+          </table>
+          <div class="text-end mt-2"><span class="section-link" style="color:var(--primary-teal); font-size:11px; cursor:pointer;">View full audit trail →</span></div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline-brand" data-bs-dismiss="modal">Close</button>
+        <button class="btn-outline-brand" style="color:var(--danger); border-color:var(--danger);" disabled title="Segregation of duties: you raised this PR"><i class="bi bi-x-lg"></i> Reject</button>
+        <button class="btn-primary-brand" disabled title="Segregation of duties: you raised this PR"><i class="bi bi-check-lg"></i> Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   Page Navigation
+   ============================================================ */
+const pageMeta = {
+  'dashboard': { trail:'Home / PharmaFlow', current:'Dashboard', role:'QA Manager' },
+  'purchase-requisitions': { trail:'Procurement / Purchase Requisitions', current:'Purchase Requisitions', role:'Procurement Officer' },
+};
+
+function showPage(pageId){
+  document.querySelectorAll('.app-page').forEach(p => p.classList.remove('is-visible'));
+  document.getElementById('page-' + pageId).classList.add('is-visible');
+
+  document.querySelectorAll('.nav-link[data-page]').forEach(l => l.classList.remove('active'));
+  const activeLink = document.querySelector('.nav-link[data-page="' + pageId + '"]');
+  if (activeLink) activeLink.classList.add('active');
+
+  const meta = pageMeta[pageId];
+  if (meta){
+    document.getElementById('bcTrail').textContent = meta.trail;
+    document.getElementById('bcCurrent').textContent = meta.current;
+    document.getElementById('uRole').textContent = meta.role;
+  }
+}
+
+/* ============================================================
+   Sidebar — Accordion Navigation (Single Open Behavior)
+   ============================================================ */
+function openAccordion(item){
+  const body = item.querySelector('.accordion-body');
+  const header = item.querySelector('.accordion-header');
+  item.classList.add('is-open');
+  header.setAttribute('aria-expanded', 'true');
+  body.style.maxHeight = body.scrollHeight + 'px';
+}
+
+function closeAccordion(item){
+  const body = item.querySelector('.accordion-body');
+  const header = item.querySelector('.accordion-header');
+  // Lock in the current rendered height first so the collapse animates from it.
+  body.style.maxHeight = body.scrollHeight + 'px';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { body.style.maxHeight = '0px'; });
+  });
+  item.classList.remove('is-open');
+  header.setAttribute('aria-expanded', 'false');
+}
+
+function toggleAccordion(headerEl){
+  const sidebar = document.getElementById('sidebar');
+  const item = headerEl.closest('.nav-accordion');
+  const wasOpen = item.classList.contains('is-open');
+
+  // If the rail is collapsed to icons, expand the sidebar first so the
+  // submenu is visible, then open the requested module.
+  if (sidebar.classList.contains('is-collapsed')){
+    setSidebarCollapsed(false);
+  }
+
+  // Single Open Accordion Behavior: close every other open module.
+  document.querySelectorAll('.nav-accordion.is-open').forEach(openItem => {
+    if (openItem !== item) closeAccordion(openItem);
+  });
+
+  if (wasOpen){
+    closeAccordion(item);
+  } else {
+    openAccordion(item);
+  }
+}
+
+function setSidebarCollapsed(collapsed){
+  const sidebar = document.getElementById('sidebar');
+  const mainWrap = document.getElementById('mainWrap');
+  sidebar.classList.toggle('is-collapsed', collapsed);
+  if (mainWrap) mainWrap.classList.toggle('is-collapsed', collapsed);
+  if (collapsed){
+    // Collapse any open module so the icon rail stays clean.
+    document.querySelectorAll('.nav-accordion.is-open').forEach(openItem => closeAccordion(openItem));
+  }
+}
+
+function toggleSidebarCollapse(){
+  const sidebar = document.getElementById('sidebar');
+  setSidebarCollapsed(!sidebar.classList.contains('is-collapsed'));
+}
+</script>
+
+<script>
+/* ============================================================
+   DASHBOARD PAGE SCRIPT (namespaced)
+   ============================================================ */
+(function(){
+/* ============================================================
+   Mock Data — Recent Quality Control Batches
+   ============================================================ */
+const qcBatches = [
+  {batch:'QC-100231', material:'Paracetamol IP', size:'250 kg', sampled:'06 Jul 2026', test:'Assay + Related Substances', status:'approved', analyst:'S. Reddy'},
+  {batch:'QC-100232', material:'Lactose Monohydrate', size:'500 kg', sampled:'06 Jul 2026', test:'Identification (IR)', status:'testing', analyst:'M. Iyer'},
+  {batch:'QC-100233', material:'Microcrystalline Cellulose', size:'300 kg', sampled:'07 Jul 2026', test:'Loss on Drying', status:'quarantine', analyst:'P. Nair'},
+  {batch:'QC-100234', material:'Magnesium Stearate', size:'50 kg', sampled:'07 Jul 2026', test:'Heavy Metals', status:'rejected', analyst:'S. Reddy'},
+  {batch:'QC-100235', material:'Ibuprofen BP', size:'400 kg', sampled:'07 Jul 2026', test:'Dissolution', status:'approved', analyst:'A. Kulkarni'},
+  {batch:'QC-100236', material:'Blister Foil — PVC/PVDC', size:'12,000 m', sampled:'08 Jul 2026', test:'Visual + Dimensional', status:'prequarantine', analyst:'M. Iyer'},
+  {batch:'QC-100237', material:'Metformin HCl IP', size:'350 kg', sampled:'08 Jul 2026', test:'Assay', status:'retest', analyst:'P. Nair'},
+  {batch:'QC-100238', material:'Croscarmellose Sodium', size:'80 kg', sampled:'08 Jul 2026', test:'Particle Size', status:'testing', analyst:'A. Kulkarni'},
+];
+
+const statusMeta = {
+  approved:      {label:'Approved',       cls:'st-approved'},
+  testing:       {label:'Under Test',     cls:'st-testing'},
+  quarantine:    {label:'Quarantine',     cls:'st-quarantine'},
+  rejected:      {label:'Rejected',       cls:'st-rejected'},
+  prequarantine: {label:'Pre-Quarantine', cls:'st-prequarantine'},
+  retest:        {label:'On Retest',      cls:'st-retest'},
+};
+
+function initials(name){
+  return name.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase();
+}
+
+const tbody = document.getElementById('qcTableBody');
+tbody.innerHTML = qcBatches.map(b=>{
+  const s = statusMeta[b.status];
+  return `<tr>
+    <td class="mono">${b.batch}</td>
+    <td>${b.material}</td>
+    <td>${b.size}</td>
+    <td>${b.sampled}</td>
+    <td>${b.test}</td>
+    <td><span class="badge-status ${s.cls}"><span class="dot"></span>${s.label}</span></td>
+    <td>
+      <div class="qa-cell">
+        <div class="qa-avatar">${initials(b.analyst)}</div>
+        <span>${b.analyst}</span>
+      </div>
+    </td>
+    <td>
+      <div class="d-flex gap-1">
+        <button class="btn-new-analysis">New Analysis</button>
+        <button class="dd-icon-btn"><i class="bi bi-three-dots"></i></button>
+      </div>
+    </td>
+  </tr>`;
+}).join('');
+
+/* ============================================================
+   Charts
+   ============================================================ */
+const donutCtx = document.getElementById('statusDonut').getContext('2d');
+new Chart(donutCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Approved','In-Progress','Quarantine','Rejected'],
+    datasets: [{
+      data: [942,176,135,31],
+      backgroundColor: ['#17A86B','#15A8A0','#F59E0B','#EF4444'],
+      borderWidth: 0,
+      hoverOffset: 6,
+    }]
+  },
+  options: {
+    cutout: '72%',
+    plugins: { legend: { display:false }, tooltip:{ bodyFont:{family:'Poppins'}, titleFont:{family:'Poppins'} } },
+    maintainAspectRatio:false,
+  }
+});
+
+const ringCtx = document.getElementById('complianceRing').getContext('2d');
+new Chart(ringCtx, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [94, 6],
+      backgroundColor: ['#118C83', '#E5E7EB'],
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    cutout: '78%',
+    rotation: -90,
+    circumference: 360,
+    plugins: { legend:{display:false}, tooltip:{enabled:false} },
+    maintainAspectRatio:false,
+  }
+});
+
+})();
+</script>
+
+<script>
+/* ============================================================
+   PURCHASE REQUISITIONS PAGE SCRIPT (namespaced)
+   ============================================================ */
+(function(){
+/* ============================================================
+   Mock Data — Purchase Requisitions (16 realistic sample rows)
+   ============================================================ */
+const prData = [
+  {no:'PR-2026-0047', dept:'Warehouse', materials:['Paracetamol IP','Blister Foil — PVC/PVDC'], priority:'high', required:'18 Jul 2026', value:'3,10,000', by:'S. Warehouse Exec.', status:'submitted'},
+  {no:'PR-2026-0046', dept:'Production', materials:['Metformin HCl IP'], priority:'urgent', required:'12 Jul 2026', value:'2,84,500', by:'A. Kulkarni', status:'submitted'},
+  {no:'PR-2026-0045', dept:'Packaging', materials:['Cartons — Secondary Pack','Aluminium Foil'], priority:'medium', required:'20 Jul 2026', value:'96,000', by:'R. Devi', status:'approved'},
+  {no:'PR-2026-0044', dept:'Warehouse', materials:['Lactose Monohydrate'], priority:'low', required:'25 Jul 2026', value:'1,45,000', by:'S. Warehouse Exec.', status:'draft'},
+  {no:'PR-2026-0043', dept:'Production', materials:['Croscarmellose Sodium','Corn Starch'], priority:'medium', required:'16 Jul 2026', value:'78,300', by:'M. Iyer', status:'converted'},
+  {no:'PR-2026-0042', dept:'QC Lab', materials:['HPLC Reference Standards'], priority:'high', required:'10 Jul 2026', value:'54,000', by:'P. Nair', status:'approved'},
+  {no:'PR-2026-0041', dept:'Warehouse', materials:['Magnesium Stearate'], priority:'low', required:'28 Jul 2026', value:'22,400', by:'S. Warehouse Exec.', status:'rejected'},
+  {no:'PR-2026-0040', dept:'Production', materials:['Ibuprofen BP','Talc'], priority:'medium', required:'14 Jul 2026', value:'2,10,000', by:'A. Kulkarni', status:'converted'},
+  {no:'PR-2026-0039', dept:'Packaging', materials:['Gelatin Capsules — Size 0'], priority:'urgent', required:'11 Jul 2026', value:'3,65,000', by:'R. Devi', status:'submitted'},
+  {no:'PR-2026-0038', dept:'Warehouse', materials:['PVP K30','Titanium Dioxide'], priority:'medium', required:'22 Jul 2026', value:'88,750', by:'S. Warehouse Exec.', status:'draft'},
+  {no:'PR-2026-0037', dept:'Production', materials:['Microcrystalline Cellulose'], priority:'high', required:'13 Jul 2026', value:'1,32,000', by:'M. Iyer', status:'approved'},
+  {no:'PR-2026-0036', dept:'QC Lab', materials:['Dissolution Media Buffers'], priority:'low', required:'30 Jul 2026', value:'19,600', by:'P. Nair', status:'converted'},
+  {no:'PR-2026-0035', dept:'Warehouse', materials:['Blister Foil — PVC/PVDC'], priority:'medium', required:'19 Jul 2026', value:'1,68,000', by:'S. Warehouse Exec.', status:'approved'},
+  {no:'PR-2026-0034', dept:'Production', materials:['Paracetamol IP','Croscarmellose Sodium'], priority:'high', required:'15 Jul 2026', value:'4,42,000', by:'A. Kulkarni', status:'submitted'},
+  {no:'PR-2026-0033', dept:'Packaging', materials:['Cartons — Secondary Pack'], priority:'low', required:'26 Jul 2026', value:'41,200', by:'R. Devi', status:'rejected'},
+  {no:'PR-2026-0032', dept:'Warehouse', materials:['Lactose Monohydrate','Magnesium Stearate'], priority:'medium', required:'21 Jul 2026', value:'2,05,000', by:'S. Warehouse Exec.', status:'converted'},
+];
+
+const statusMeta = {
+  draft:      {label:'Draft',            cls:'st-draft'},
+  submitted:  {label:'Pending Approval', cls:'st-submitted'},
+  approved:   {label:'Approved',         cls:'st-approved'},
+  rejected:   {label:'Rejected',         cls:'st-rejected'},
+  converted:  {label:'Converted to PO',  cls:'st-converted'},
+};
+const priorityMeta = {
+  low:{label:'Low', cls:'pr-low'}, medium:{label:'Medium', cls:'pr-medium'},
+  high:{label:'High', cls:'pr-high'}, urgent:{label:'Urgent', cls:'pr-urgent'},
+};
+
+function initials(name){ return name.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase(); }
+
+function renderTable(filter){
+  const tbody = document.getElementById('prTableBody');
+  const rows = filter && filter!=='all' ? prData.filter(r=>r.status===filter) : prData;
+  tbody.innerHTML = rows.map(r=>{
+    const s = statusMeta[r.status];
+    const p = priorityMeta[r.priority];
+    const matChips = `<span class="material-chip">${r.materials[0]}</span>` + (r.materials.length>1 ? `<span class="material-more">+${r.materials.length-1} more</span>` : '');
+    return `<tr onclick="openViewModal('${r.no}')">
+      <td class="pr-no">${r.no}</td>
+      <td><span class="dept-pill">${r.dept}</span></td>
+      <td>${matChips}</td>
+      <td><span class="priority-pill ${p.cls}">${p.label}</span></td>
+      <td>${r.required}</td>
+      <td class="mono">₹ ${r.value}</td>
+      <td><div class="raised-cell"><div class="raised-avatar">${initials(r.by)}</div><span>${r.by}</span></div></td>
+      <td><span class="badge-status ${s.cls}"><span class="dot"></span>${s.label}</span></td>
+      <td onclick="event.stopPropagation();"><button class="dd-icon-btn"><i class="bi bi-three-dots"></i></button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('pagCount').textContent = `Showing 1–${rows.length} of ${prData.length} requisitions`;
+}
+renderTable('all');
+
+document.querySelectorAll('.stat-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    document.querySelectorAll('.stat-card').forEach(c=>c.classList.remove('is-active'));
+    card.classList.add('is-active');
+    renderTable(card.dataset.filter);
+  });
+});
+
+function openViewModal(no){
+  const r = prData.find(x=>x.no===no);
+  if(!r) return;
+  const s = statusMeta[r.status];
+  document.getElementById('vpTitle').innerHTML = `${r.no} <span class="badge-status ${s.cls}" style="margin-left:8px;"><span class="dot"></span>${s.label}</span>`;
+  document.getElementById('vpSubtitle').textContent = `Raised by ${r.dept} · ${r.by}`;
+  document.getElementById('dDept').textContent = r.dept;
+  document.getElementById('dPriority').textContent = priorityMeta[r.priority].label;
+  document.getElementById('dRequired').textContent = r.required;
+  document.getElementById('dTotalValue').textContent = '₹ ' + r.value;
+  document.getElementById('viewLineItems').innerHTML = r.materials.map(m=>`<tr><td>${m}</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>`).join('');
+  const modal = new bootstrap.Modal(document.getElementById('viewPrModal'));
+  modal.show();
+}
+
+/* Tab switching inside View modal */
+document.querySelectorAll('.tnb-item').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tnb-item').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.vtab-pane').forEach(p=>p.classList.add('d-none'));
+    document.getElementById('vtab-'+tab.dataset.vtab).classList.remove('d-none');
+  });
+});
+
+/* Priority toggle in New PR modal */
+document.querySelectorAll('.priority-toggle .pt-opt').forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    opt.parentElement.querySelectorAll('.pt-opt').forEach(o=>o.classList.remove('active'));
+    opt.classList.add('active');
+  });
+});
+
+/* Line item add / remove / value calc in New PR modal */
+function recalcTotal(){
+  let total = 0;
+  document.querySelectorAll('#lineItemsBody tr').forEach(tr=>{
+    const qty = parseFloat(tr.querySelector('.qty-input')?.value || 0);
+    const rate = parseFloat(tr.querySelector('.rate-input')?.value || 0);
+    const val = qty * rate;
+    tr.querySelector('.line-value').textContent = val.toLocaleString('en-IN');
+    total += val;
+  });
+  document.getElementById('totalValueDisplay').textContent = '₹ ' + total.toLocaleString('en-IN');
+}
+document.getElementById('lineItemsBody').addEventListener('input', recalcTotal);
+document.getElementById('lineItemsBody').addEventListener('click', e=>{
+  if(e.target.closest('.remove-row-btn')){
+    e.target.closest('tr').remove();
+    recalcTotal();
+  }
+});
+document.getElementById('addLineItem').addEventListener('click', ()=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><select><option>Paracetamol IP</option><option>Lactose Monohydrate</option><option>Microcrystalline Cellulose</option><option>Magnesium Stearate</option></select></td>
+    <td><input value="—" disabled></td>
+    <td><input value="—" disabled></td>
+    <td><input type="number" value="0" class="qty-input"></td>
+    <td><input value="kg" disabled></td>
+    <td><input type="number" value="0" class="rate-input"></td>
+    <td class="line-value">0</td>
+    <td><button class="remove-row-btn"><i class="bi bi-trash3"></i></button></td>`;
+  document.getElementById('lineItemsBody').appendChild(tr);
+});
+recalcTotal();
+
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
